@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:menopal/screens/Calendar.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:menopal/screens/Dashboard.dart';
+import 'package:menopal/screens/Getstarted.dart';
+import 'package:menopal/screens/Home.dart';
 import 'RegistrationScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -95,11 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.pink,
-        title: Text('Meno Pal'),
-      ),
+      backgroundColor: Color.fromARGB(255, 240, 220, 192),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -113,8 +112,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 30),
                     Text(
                       'Welcome back to Meno Pal!',
-                      style: TextStyle(
-                        fontSize: 24,
+                      style: GoogleFonts.lobsterTwo(
+                        fontSize: 40,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -143,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
           .then((uid) => {
                 Fluttertoast.showToast(msg: "Login Successful!"),
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => PeriodCalendar()))
+                    MaterialPageRoute(builder: (context) => Homepage()))
               })
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);

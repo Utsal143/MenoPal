@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:menopal/screens/Calendar.dart';
+import 'package:menopal/screens/Dashboard.dart';
 import 'package:menopal/firebase_options.dart';
+import 'package:menopal/screens/Getstarted.dart';
 import 'screens/RegistrationScreen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +22,17 @@ class MenoPal extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Meno Pal",
-      theme: ThemeData(primarySwatch: Colors.pink),
-      home: RegistrationScreen(),
+      theme: ThemeData(
+        fontFamily: GoogleFonts.lobsterTwo().fontFamily,
+        primaryColor: Color.fromARGB(0, 31, 8, 68),
+        primarySwatch: Colors.pink,
+        primaryColorLight: Color.fromARGB(255, 0, 0, 0),
+        scaffoldBackgroundColor: Color.fromARGB(255, 240, 220, 192),
+        textTheme: TextTheme(
+            bodyLarge: TextStyle(color: Colors.white),
+            bodySmall: TextStyle(color: Colors.white)),
+      ),
+      home: HomePage(),
     );
   }
 }

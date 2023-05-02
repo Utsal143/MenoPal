@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:menopal/screens/Calendar.dart';
+import 'package:menopal/screens/Dashboard.dart';
 import 'package:menopal/screens/LoginScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../model/user_model.dart';
 
@@ -154,25 +155,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     //sign up button
     final signUpButton = Material(
         elevation: 5,
-        borderRadius: BorderRadius.circular(10),
         color: Colors.pink,
+        borderRadius: BorderRadius.circular(30),
         child: MaterialButton(
           onPressed: () {
             signUp(_emailController.text, _passwordController.text);
           },
-          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          padding: EdgeInsets.fromLTRB(20, 25, 20, 25),
           child: Text("Sign Up",
-              style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, color: Colors.white),
               textAlign: TextAlign.center),
         ));
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.pink,
-        title: Text('Meno Pal'),
-      ),
+      backgroundColor: Color.fromARGB(255, 240, 220, 192),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -182,15 +177,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 50),
-                  Text(
-                    'Create your account',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/launch_image.png',
+                        height: 200,
+                        width: 200,
+                      ),
+                      Positioned(
+                        bottom: 10,
+                        child: Text(
+                          'Create your account',
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 30),
                   firstNameField,
@@ -218,8 +222,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         },
                         child: Text(
                           "Login",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
+                          style: TextStyle(fontSize: 15),
                         ),
                       )
                     ],
