@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:menopal/screens/Dashboard.dart';
+import 'package:menopal/screens/Tracker.dart';
 import 'package:menopal/screens/Getstarted.dart';
 import 'package:menopal/screens/Home.dart';
 import 'RegistrationScreen.dart';
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         child: Text(
-          "LOGIN",
+          "Login",
           style: TextStyle(
               fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
