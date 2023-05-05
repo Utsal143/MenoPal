@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:menopal/screens/Chatbotui.dart';
 import 'package:menopal/screens/Foryou.dart';
 import 'package:menopal/screens/Shop.dart';
 import 'package:menopal/screens/Tracker.dart';
@@ -15,7 +16,12 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _currentIndex = 0;
-  final List<Widget> _children = [Foryou(), PeriodCalendar(), Shop()];
+  final List<Widget> _children = [
+    Foryou(),
+    PeriodCalendar(),
+    Shop(),
+    ChatbotUI()
+  ];
 
   void onTappedBar(int index) {
     setState(() {

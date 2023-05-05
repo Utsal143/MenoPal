@@ -12,9 +12,10 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDate;
+  TextEditingController _cycleLengthController = TextEditingController();
 
   List<DateTime> _menstruationDates = []; // List of menstruation dates
-  int _cycleLength = 28; // Average menstrual cycle length is 28 days
+  int get _cycleLength => int.tryParse(_cycleLengthController.text) ?? 28;
 
   @override
   void initState() {
@@ -121,6 +122,12 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                               style:
                                   TextStyle(fontSize: 20, color: Colors.pink)),
                         ),
+                      ),
+                      TextField(
+                        controller: _cycleLengthController,
+                        keyboardType: TextInputType.number,
+                        decoration:
+                            InputDecoration(labelText: 'Cycle length (days)'),
                       ),
                     ],
                   ),
