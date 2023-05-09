@@ -29,13 +29,25 @@ class _ChatbotUIState extends State<ChatbotUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Meno Pal Chatbot"),
-        centerTitle: true,
-        backgroundColor: Colors.pink,
-      ),
       body: Column(
         children: [
+          Container(
+            child: ClipPath(
+              clipper: CustomClipPath(),
+              child: Container(
+                height: 110,
+                width: 1920,
+                color: Colors.pink,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(50, 50, 0, 0),
+                  child: Text(
+                    'ChatBot',
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(8.0),
@@ -52,11 +64,14 @@ class _ChatbotUIState extends State<ChatbotUI> {
             child: Row(
               children: [
                 Flexible(
-                  child: TextField(
-                    controller: _textController,
-                    onSubmitted: _handleSubmit,
-                    decoration: InputDecoration.collapsed(
-                      hintText: "Send a message",
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    child: TextField(
+                      controller: _textController,
+                      onSubmitted: _handleSubmit,
+                      decoration: InputDecoration.collapsed(
+                        hintText: "Send a message",
+                      ),
                     ),
                   ),
                 ),
@@ -112,5 +127,22 @@ class ChatMessage extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CustomClipPath extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height / 2);
+    path.cubicTo(size.width / 4, 3 * (size.height / 2), 3 * (size.width / 4),
+        size.height / 2, size.width, size.height * 0.9);
+    path.lineTo(size.width, 0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }

@@ -1,7 +1,6 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'data.dart';
+import 'item.dart';
 
 class Shop extends StatefulWidget {
   const Shop({super.key});
@@ -34,77 +33,71 @@ class _ShopState extends State<Shop> {
             ),
           ),
           Expanded(
-            child: Container(
-              width: double.infinity,
-              child: Center(
-                child: GridView.count(
-                  shrinkWrap: true,
-                  crossAxisSpacing: 10,
-                  crossAxisCount: 2,
-                  children: List.generate(10, (index) {
-                    return Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(10),
+            child: SafeArea(
+              child: Container(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 20,
                             ),
-                            child: FancyShimmerImage(
-                              imageUrl:
-                                  'https://cdn.shopify.com/s/files/1/0650/5699/7594/products/My-Cup-Size-0_53a9c4a8-fafd-40e0-b520-28b9a04ffa6c.jpg?v=1654828101',
-                              height: 120,
-                              width: 120,
-                              boxFit: BoxFit.fill,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 3,
-                              vertical: 3,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'MyCup Menstrual Cup',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                SizedBox(height: 2),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '\$19.99',
-                                      style: TextStyle(fontSize: 12),
+                            itemCount: 6,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductDetail(index: index),
                                     ),
-                                    SizedBox(width: 5),
-                                    Icon(Icons.star,
-                                        color: Colors.grey, size: 12),
-                                    Icon(Icons.star,
-                                        color: Colors.grey, size: 12),
-                                    Icon(Icons.star,
-                                        color: Colors.grey, size: 12),
-                                    Icon(Icons.star_border,
-                                        color: Colors.grey, size: 12),
-                                    Icon(Icons.star_border,
-                                        color: Colors.grey, size: 12),
+                                  );
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        child: Center(
+                                          child: Stack(
+                                            children: [
+                                              Image.network(
+                                                data[index]['image'],
+                                                height: 120,
+                                                width: 100,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(data[index]['name'],
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400)),
+                                    Text(
+                                      r'$' + data[index]['price'],
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w400),
+                                    )
                                   ],
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
+                              );
+                            }),
                       ),
-                    );
-                  }),
+                    )
+                  ],
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );

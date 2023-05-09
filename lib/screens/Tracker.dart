@@ -84,7 +84,7 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(50, 50, 0, 0),
                     child: Text(
-                      'Period Tracker & Logger',
+                      'Tracker & Logger',
                       style: TextStyle(fontSize: 30, color: Colors.white),
                     ),
                   ),
@@ -95,6 +95,18 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
               physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                    child: TextField(
+                      controller: _cycleLengthController,
+                      keyboardType: TextInputType.number,
+                      decoration:
+                          InputDecoration(labelText: 'Cycle length (days)'),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   Stack(
                     children: [
                       Container(
@@ -103,15 +115,31 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                         color: Color.fromARGB(255, 240, 220, 192),
                       ),
                       Center(
-                        child: SizedBox(
+                        child: Container(
                           width: 200,
                           height: 200,
-                          child: CircularProgressIndicator(
-                            value: progress,
-                            strokeWidth: 10,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.blue,
-                            ),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.3),
+                                blurRadius: 20,
+                                spreadRadius: 5,
+                              ),
+                            ],
+                            shape: BoxShape.circle,
+                          ),
+                          child: TweenAnimationBuilder<double>(
+                            tween: Tween<double>(begin: 0, end: progress),
+                            duration: Duration(milliseconds: 1000),
+                            builder: (BuildContext context, double value,
+                                Widget? child) {
+                              return CircularProgressIndicator(
+                                value: value,
+                                strokeWidth: 10,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.blue),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -123,13 +151,10 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                                   TextStyle(fontSize: 20, color: Colors.pink)),
                         ),
                       ),
-                      TextField(
-                        controller: _cycleLengthController,
-                        keyboardType: TextInputType.number,
-                        decoration:
-                            InputDecoration(labelText: 'Cycle length (days)'),
-                      ),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   TableCalendar(
                     focusedDay: _focusedDay,

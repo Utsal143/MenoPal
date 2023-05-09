@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:menopal/screens/profile/Account.dart';
 import 'package:menopal/screens/Chatbotui.dart';
 import 'package:menopal/screens/Foryou.dart';
 import 'package:menopal/screens/Shop.dart';
@@ -20,7 +21,8 @@ class _HomepageState extends State<Homepage> {
     Foryou(),
     PeriodCalendar(),
     Shop(),
-    ChatbotUI()
+    ChatbotUI(),
+    ProfileScreen(),
   ];
 
   void onTappedBar(int index) {
