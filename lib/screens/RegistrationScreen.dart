@@ -5,6 +5,7 @@ import 'package:menopal/screens/Tracker.dart';
 import 'package:menopal/screens/LoginScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'profile/EditProfile.dart';
 
 import '../model/user_model.dart';
 
