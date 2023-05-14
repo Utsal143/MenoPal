@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:menopal/screens/Getstarted.dart';
+import 'package:menopal/screens/Home.dart';
 import 'package:menopal/screens/Tracker.dart';
 import 'package:menopal/screens/LoginScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'profile/EditProfile.dart';
-
+import 'AdminDashboard.dart';
 import '../model/user_model.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -15,6 +17,8 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  //Boolean variable for admin
+  bool isAdmin = false;
   //form key
   final _formKey = GlobalKey<FormState>();
 
@@ -242,7 +246,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (_formKey.currentState!.validate()) {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore()})
+          .then((value) => {
+                if (email == "admin@gmail.com")
+                  {
+                    isAdmin = true,
+                  },
+                postDetailsToFirestore()
+              })
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);
       });
@@ -270,9 +280,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully");
 
-    Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(builder: (context) => PeriodCalendar()),
-        (route) => false);
+    if (isAdmin) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AdminDashboardUI(isAdmin: true)),
+          (route) => false);
+    } else {
+      Navigator.pushAndRemoveUntil(
+          (context),
+          MaterialPageRoute(builder: (context) => Homepage()),
+          (route) => false);
+    }
   }
 }

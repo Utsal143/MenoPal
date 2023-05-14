@@ -4,10 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'AdminDashboard.dart';
 import 'package:menopal/screens/Tracker.dart';
 import 'package:menopal/screens/Getstarted.dart';
 import 'package:menopal/screens/Home.dart';
 import 'RegistrationScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -15,6 +17,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  //boolean variable for admin
+  bool isAdmin = false;
   //form key
   final _formKey = GlobalKey<FormState>();
 
@@ -24,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //firebase
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -134,19 +139,48 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   //login function
+
   void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       await _auth
           .signInWithEmailAndPassword(email: email, password: password)
-          .then((uid) => {
+          .then((value) => {
+                if (email == "admin@gmail.com")
+                  {
+                    isAdmin = true,
+                  }, // Update this line
+
                 Fluttertoast.showToast(msg: "Login Successful!"),
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => Homepage()))
+
+                if (isAdmin)
+                  {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              AdminDashboardUI(isAdmin: true)),
+                      (route) => false,
+                    ),
+                  }
+                else
+                  {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => Homepage()),
+                      (route) => false,
+                    ),
+                  }
               })
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);
       });
     }
+  }
+
+  Future<bool> checkAdmin(String uid) async {
+    DocumentSnapshot snapshot =
+        await _firestore.collection('admin').doc(uid).get();
+    return snapshot.exists && snapshot.data() != null;
   }
 }

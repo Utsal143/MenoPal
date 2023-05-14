@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:menopal/screens/AdminDashboard.dart';
 import 'package:menopal/screens/Chatbotui.dart';
 import 'package:menopal/screens/Tracker.dart';
 import 'package:menopal/firebase_options.dart';
@@ -21,19 +22,18 @@ class MenoPal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Meno Pal",
-      theme: ThemeData(
-        fontFamily: GoogleFonts.lobsterTwo().fontFamily,
-        primaryColor: Color.fromARGB(0, 31, 8, 68),
-        primarySwatch: Colors.pink,
-        primaryColorLight: Color.fromARGB(255, 0, 0, 0),
-        scaffoldBackgroundColor: Color.fromARGB(255, 240, 220, 192),
-        textTheme: TextTheme(
-            bodyLarge: TextStyle(color: Colors.white),
-            bodySmall: TextStyle(color: Colors.white)),
-      ),
-      home: HomePage(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: "Meno Pal",
+        theme: ThemeData(
+          fontFamily: GoogleFonts.lobsterTwo().fontFamily,
+          primaryColor: Color.fromARGB(0, 31, 8, 68),
+          primarySwatch: Colors.pink,
+          primaryColorLight: Color.fromARGB(255, 0, 0, 0),
+          scaffoldBackgroundColor: Color.fromARGB(255, 240, 220, 192),
+          textTheme: TextTheme(
+              bodyLarge: TextStyle(color: Colors.white),
+              bodySmall: TextStyle(color: Colors.white)),
+        ),
+        home: HomePage());
   }
 }
