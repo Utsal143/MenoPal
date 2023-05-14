@@ -13,6 +13,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -120,8 +121,8 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 FileMenu(
-                  title: 'Clear Track Logs',
-                  icon: Icons.cleaning_services_outlined,
+                  title: 'My Cart',
+                  icon: Icons.shopping_cart,
                   onPress: () {},
                 ),
                 const SizedBox(height: 5),

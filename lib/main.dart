@@ -25,7 +25,7 @@ class MenoPal extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: "Meno Pal",
         theme: ThemeData(
-          fontFamily: GoogleFonts.lobsterTwo().fontFamily,
+          fontFamily: GoogleFonts.robotoCondensed().fontFamily,
           primaryColor: Color.fromARGB(0, 31, 8, 68),
           primarySwatch: Colors.pink,
           primaryColorLight: Color.fromARGB(255, 0, 0, 0),

@@ -71,6 +71,7 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
     int daysLeft = nextCycleStartDate.difference(now).inDays;
     double progress = daysLeft / 28.0;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -92,18 +93,37 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
               ),
             ),
             SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                    child: TextField(
-                      controller: _cycleLengthController,
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          InputDecoration(labelText: 'Cycle length (days)'),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 250.0, // set your desired width here
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.pink,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: TextField(
+                        controller: _cycleLengthController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Cycle length (days)',
+                          border: InputBorder.none,
+                        ),
+                      ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text('Note: Default Period Length is set to 28 days.',
+                      style: TextStyle(fontSize: 12)),
                   const SizedBox(
                     height: 30,
                   ),
@@ -112,7 +132,6 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                       Container(
                         height: 200,
                         width: double.infinity,
-                        color: Color.fromARGB(255, 240, 220, 192),
                       ),
                       Center(
                         child: Container(
@@ -121,7 +140,8 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.blue.withOpacity(0.3),
+                                color: Color.fromARGB(255, 219, 151, 208)
+                                    .withOpacity(0.3),
                                 blurRadius: 20,
                                 spreadRadius: 5,
                               ),
@@ -135,9 +155,9 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                                 Widget? child) {
                               return CircularProgressIndicator(
                                 value: value,
-                                strokeWidth: 10,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.blue),
+                                strokeWidth: 15,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Color.fromARGB(255, 211, 101, 187)),
                               );
                             },
                           ),
@@ -158,7 +178,7 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                   ),
                   TableCalendar(
                     focusedDay: _focusedDay,
-                    firstDay: DateTime(2020),
+                    firstDay: DateTime(2023),
                     lastDay: DateTime(2030),
                     calendarFormat: _calendarFormat,
                     onFormatChanged: (format) {
@@ -173,6 +193,32 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                       return isSameDay(_selectedDate!, day);
                     },
                     onDaySelected: _onDaySelected,
+                    availableGestures: AvailableGestures.none,
+                    headerStyle: HeaderStyle(
+                      titleCentered: true,
+                      formatButtonVisible: false,
+                      headerPadding: EdgeInsets.zero,
+                      headerMargin: EdgeInsets.zero,
+                    ),
+                    calendarBuilders: CalendarBuilders(
+                      todayBuilder: (context, day, _) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.pink, // Change the color to pink
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${day.day}',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   SizedBox(height: 10),
                   Row(
@@ -181,7 +227,7 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                       ElevatedButton(
                         onPressed: () => _addMenstruationDate(_selectedDate!),
                         child: Text(
-                          "Log Menstruation Day",
+                          "Track Period",
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
@@ -189,7 +235,7 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                         onPressed: () =>
                             _removeMenstruationDate(_selectedDate!),
                         child: Text(
-                          "Remove Menstruation Day",
+                          "End Period",
                           style: TextStyle(fontSize: 13),
                         ),
                       ),

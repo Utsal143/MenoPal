@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:menopal/screens/profile/Account.dart';
 import 'package:menopal/screens/Chatbotui.dart';
-import 'package:menopal/screens/Foryou.dart';
+import 'package:menopal/screens/API/Foryou.dart';
 import 'package:menopal/screens/Shop.dart';
 import 'package:menopal/screens/Tracker.dart';
 import 'package:menopal/screens/Getstarted.dart';
