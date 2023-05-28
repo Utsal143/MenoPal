@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CartPage extends StatelessWidget {
+import 'item.dart';
+
+class CartPage extends StatefulWidget {
+  @override
+  _CartPageState createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  List<Map<String, dynamic>> cartItems = Cart.getItems();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,26 +33,61 @@ class CartPage extends StatelessWidget {
               ),
             ),
           ),
-          // Expanded()
+          Expanded(
+            child: ListView.builder(
+              itemCount: cartItems.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Image.network(cartItems[index]['image']),
+                  title: Text(cartItems[index]['name']),
+                  subtitle: Text(cartItems[index]['description']),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          setState(() {
+                            cartItems.removeAt(index);
+                          });
+                        },
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Perform buy now action for the item
+                          buyNowAction(cartItems[index]);
+                        },
+                        child: Text('Buy Now'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
   }
+
+  void buyNowAction(Map<String, dynamic> item) {
+    // Implement the logic for the buy now action here
+    // You can navigate to a checkout page or perform any other action
+  }
 }
 
-class CustomClipPath extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height / 2);
-    path.cubicTo(size.width / 4, 3 * (size.height / 2), 3 * (size.width / 4),
-        size.height / 2, size.width, size.height * 0.9);
-    path.lineTo(size.width, 0);
-    return path;
+class Cart {
+  static List<Map<String, dynamic>> items = [];
+
+  static void addItem(Map<String, dynamic> item) {
+    items.add(item);
   }
 
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
+  static void removeItem(Map<String, dynamic> item, int index) {
+    items.removeAt(index);
+  }
+
+  static List<Map<String, dynamic>> getItems() {
+    return items;
   }
 }

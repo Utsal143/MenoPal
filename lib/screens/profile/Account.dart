@@ -130,10 +130,8 @@ class ProfileScreen extends StatelessWidget {
                   title: 'My Cart',
                   icon: Icons.shopping_cart,
                   onPress: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CartPage()),
-                    );
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CartPage()));
                   },
                 ),
                 const SizedBox(height: 5),

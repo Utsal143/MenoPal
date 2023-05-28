@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menopal/screens/Cart.dart';
 import 'data.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -123,6 +124,7 @@ class _ProductDetailState extends State<ProductDetail> {
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
+                  Cart.addItem(data[widget.index]);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Added $_quantity item(s) to cart.'),
