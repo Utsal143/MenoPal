@@ -132,9 +132,7 @@ class ProfileScreen extends StatelessWidget {
                   onPress: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CartPage()), // Replace CartPage with the actual class name of your Cart.dart file
+                      MaterialPageRoute(builder: (context) => CartPage()),
                     );
                   },
                 ),
@@ -145,9 +143,7 @@ class ProfileScreen extends StatelessWidget {
                   onPress: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              AboutUs()), // Replace CartPage with the actual class name of your Cart.dart file
+                      MaterialPageRoute(builder: (context) => AboutUs()),
                     );
                   },
                 ),

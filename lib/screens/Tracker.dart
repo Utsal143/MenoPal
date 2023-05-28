@@ -16,11 +16,13 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
 
   List<DateTime> _menstruationDates = []; // List of menstruation dates
   int get _cycleLength => int.tryParse(_cycleLengthController.text) ?? 28;
+  bool _isTrackingPeriod = false;
 
   @override
   void initState() {
     super.initState();
     _selectedDate = _focusedDay;
+    _isTrackingPeriod = false;
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -30,14 +32,17 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
   }
 
   void _addMenstruationDate(DateTime date) {
-    setState(() {
-      _menstruationDates.add(date);
-    });
+    if (_isTrackingPeriod) {
+      setState(() {
+        _menstruationDates.add(date);
+      });
+    }
   }
 
   void _removeMenstruationDate(DateTime date) {
     setState(() {
       _menstruationDates.remove(date);
+      _selectedDate = null;
     });
   }
 
@@ -218,6 +223,47 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                           ),
                         );
                       },
+                      selectedBuilder: (context, day, _) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.pink,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${day.day}',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      markerBuilder: (context, day, events) {
+                        final isCycleStartDay =
+                            _menstruationDates.contains(day);
+                        final isCycleDay = _selectedDate != null &&
+                            isSameDay(day, _selectedDate!);
+                        final isHighlightedDay = isCycleStartDay ||
+                            isCycleDay ||
+                            (nextCycleStartDate.difference(day).inDays <= 3 &&
+                                nextCycleStartDate.difference(day).inDays >= 0);
+                        if (isHighlightedDay) {
+                          return Positioned(
+                            bottom: 5,
+                            child: Container(
+                              width: 5,
+                              height: 5,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.pink,
+                              ),
+                            ),
+                          );
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   SizedBox(height: 10),
@@ -225,9 +271,14 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                        onPressed: () => _addMenstruationDate(_selectedDate!),
+                        onPressed: () {
+                          setState(() {
+                            _isTrackingPeriod = true;
+                          });
+                          _addMenstruationDate(_selectedDate!);
+                        },
                         child: Text(
-                          "Track Period",
+                          "Log Period Date",
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
@@ -235,7 +286,7 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                         onPressed: () =>
                             _removeMenstruationDate(_selectedDate!),
                         child: Text(
-                          "End Period",
+                          "Remove Period Date",
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
