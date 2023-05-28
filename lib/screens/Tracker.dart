@@ -14,14 +14,17 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
   DateTime? _selectedDate;
   TextEditingController _cycleLengthController = TextEditingController();
 
+  int daysLeft = 0;
+
   List<DateTime> _menstruationDates = []; // List of menstruation dates
   int get _cycleLength => int.tryParse(_cycleLengthController.text) ?? 28;
   bool _isTrackingPeriod = false;
+  bool _isPeriodDateLogged = false;
 
   @override
   void initState() {
     super.initState();
-    _selectedDate = _focusedDay;
+    _selectedDate = null;
     _isTrackingPeriod = false;
   }
 
@@ -35,6 +38,12 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
     if (_isTrackingPeriod) {
       setState(() {
         _menstruationDates.add(date);
+        _isPeriodDateLogged = true;
+
+        // Update daysLeft when period date is logged
+        DateTime nextCycleStartDate = _getNextCycleStartDate();
+        DateTime now = DateTime.now();
+        daysLeft = nextCycleStartDate.difference(now).inDays;
       });
     }
   }
@@ -43,6 +52,8 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
     setState(() {
       _menstruationDates.remove(date);
       _selectedDate = null;
+      _isPeriodDateLogged = false;
+      daysLeft = 0;
     });
   }
 
@@ -73,8 +84,8 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
   Widget build(BuildContext context) {
     DateTime nextCycleStartDate = _getNextCycleStartDate();
     DateTime now = DateTime.now();
-    int daysLeft = nextCycleStartDate.difference(now).inDays;
-    double progress = daysLeft / 28.0;
+    double progress = daysLeft /
+        (_cycleLength != null && _cycleLength != 0 ? _cycleLength : 28.0);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -245,10 +256,13 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                             _menstruationDates.contains(day);
                         final isCycleDay = _selectedDate != null &&
                             isSameDay(day, _selectedDate!);
-                        final isHighlightedDay = isCycleStartDay ||
-                            isCycleDay ||
-                            (nextCycleStartDate.difference(day).inDays <= 3 &&
-                                nextCycleStartDate.difference(day).inDays >= 0);
+                        final isHighlightedDay = _isPeriodDateLogged &&
+                            (isCycleStartDay ||
+                                isCycleDay ||
+                                (nextCycleStartDate.difference(day).inDays <=
+                                        3 &&
+                                    nextCycleStartDate.difference(day).inDays >=
+                                        0));
                         if (isHighlightedDay) {
                           return Positioned(
                             bottom: 5,
