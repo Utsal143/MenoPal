@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'LoginScreen.dart';
 
 class AdminDashboardUI extends StatelessWidget {
   final bool isAdmin;
@@ -72,11 +76,21 @@ class AdminDashboardUI extends StatelessWidget {
     deleteItem(itemId);
   }
 
+  void logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Admin Dashboard'),
+        actions: [
+          IconButton(icon: Icon(Icons.logout), onPressed: () => logout(context))
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -114,11 +128,40 @@ class AdminDashboardUI extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: 12),
-              TextField(
+              TextFormField(
                 controller: imageUrlController,
                 decoration: InputDecoration(
-                  labelText: 'Image URL',
+                  labelText: 'Image',
                   border: OutlineInputBorder(),
+                  suffixIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.photo_library),
+                        onPressed: () async {
+                          final pickedImage = await ImagePicker()
+                              .getImage(source: ImageSource.gallery);
+                          if (pickedImage != null) {
+                            // Handle the selected image from gallery
+                            // Update the text field with the image URL
+                            imageUrlController.text = pickedImage.path;
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.camera_alt),
+                        onPressed: () async {
+                          final pickedImage = await ImagePicker()
+                              .pickImage(source: ImageSource.camera);
+                          if (pickedImage != null) {
+                            // Handle the captured image from camera
+                            // Update the text field with the image URL
+                            imageUrlController.text = pickedImage.path;
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 12),
@@ -133,39 +176,56 @@ class AdminDashboardUI extends StatelessWidget {
               ),
               SizedBox(height: 16),
               SizedBox(height: 16),
-              StreamBuilder<QuerySnapshot>(
-                stream:
-                    FirebaseFirestore.instance.collection('items').snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final items = snapshot.data!.docs;
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final itemData =
-                            items[index].data() as Map<String, dynamic>;
-                        final itemId = items[index].id;
-                        return ListTile(
-                          leading: Image.network(
-                            itemData['imageUrl'],
-                          ),
-                          title: Text(itemData['itemName']),
-                          subtitle: Text(itemData['description']),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              handleDeleteItem(itemId);
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Adjust the radius value as needed
+                  child: Container(
+                    color: Colors.grey[300],
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('items')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final items = snapshot.data!.docs;
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              final itemData =
+                                  items[index].data() as Map<String, dynamic>;
+                              final itemId = items[index].id;
+                              return ListTile(
+                                leading: Image.network(
+                                  itemData['imageUrl'],
+                                ),
+                                title: Text(itemData['itemName'],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                subtitle: Text(
+                                  itemData['description'],
+                                  maxLines: 5,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    handleDeleteItem(itemId);
+                                  },
+                                ),
+                              );
                             },
-                          ),
-                        );
+                            separatorBuilder: (context, index) => Divider(),
+                          );
+                        }
+                        return CircularProgressIndicator();
                       },
-                      separatorBuilder: (context, index) => Divider(),
-                    );
-                  }
-                  return CircularProgressIndicator();
-                },
-              ),
+                    ),
+                  )),
             ],
           ),
         ),

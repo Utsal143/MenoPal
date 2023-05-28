@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'APIservice.dart';
 import 'Article.dart';
+import 'inapp_webview_page.dart';
 
 class Foryou extends StatefulWidget {
   @override
@@ -81,35 +82,53 @@ class _ForyouState extends State<Foryou> {
                                     },
                                   ),
                                 ),
-                                ListTile(
-                                  onTap: () {},
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
-                                  title: Text(
-                                    snapshot.data![index].title,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(height: 8),
-                                      Text(
-                                        snapshot.data![index].description,
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.black),
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => InAppWebViewPage(
+                                          initialUrl: snapshot.data![index].url,
+                                        ),
                                       ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        'By ${snapshot.data![index].author}',
+                                    );
+                                  },
+                                  child: Card(
+                                    elevation: 2.0,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 8.0),
+                                    child: ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16.0, vertical: 8.0),
+                                      title: Text(
+                                        snapshot.data![index].title,
                                         style: TextStyle(
-                                            fontSize: 12, color: Colors.black),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    ],
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 8),
+                                          Text(
+                                            snapshot.data![index].description,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black),
+                                            maxLines: 4,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            'By ${snapshot.data![index].author}',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -174,15 +193,18 @@ class CustomClipPath extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    path.lineTo(0, size.height / 2);
-    path.cubicTo(size.width / 4, 3 * (size.height / 2), 3 * (size.width / 4),
-        size.height / 2, size.width, size.height * 0.9);
+    path.lineTo(0, size.height - 40);
+    path.quadraticBezierTo(
+        size.width / 4, size.height, size.width / 2, size.height);
+    path.quadraticBezierTo(
+        3 / 4 * size.width, size.height, size.width, size.height - 40);
     path.lineTo(size.width, 0);
+    path.close();
     return path;
   }
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return false;
   }
 }

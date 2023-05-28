@@ -1,7 +1,10 @@
+import 'dart:math'; // Import the Cart.dart file
 import 'package:flutter/material.dart';
 import 'package:menopal/model/user_model.dart';
 import 'package:menopal/screens/LoginScreen.dart';
 import 'package:menopal/screens/profile/EditProfile.dart';
+import '../About.dart';
+import '../Cart.dart';
 import 'Menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -103,7 +106,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('Edit Profile'),
+              child: const Text(
+                'Edit Profile',
+                style: TextStyle(fontSize: 18),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.pink,
                 side: BorderSide.none,
@@ -123,13 +129,27 @@ class ProfileScreen extends StatelessWidget {
                 FileMenu(
                   title: 'My Cart',
                   icon: Icons.shopping_cart,
-                  onPress: () {},
+                  onPress: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              CartPage()), // Replace CartPage with the actual class name of your Cart.dart file
+                    );
+                  },
                 ),
                 const SizedBox(height: 5),
                 FileMenu(
                   title: 'About Us',
-                  icon: Icons.people_alt_sharp,
-                  onPress: () {},
+                  icon: Icons.group_sharp,
+                  onPress: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              AboutUs()), // Replace CartPage with the actual class name of your Cart.dart file
+                    );
+                  },
                 ),
                 const SizedBox(height: 5),
                 FileMenu(
