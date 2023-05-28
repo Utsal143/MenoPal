@@ -284,7 +284,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (context) => AdminDashboardUI(isAdmin: true)),
+              builder: (context) => AdminDashboardUI(
+                    isAdmin: true,
+                    context: context,
+                  )),
           (route) => false);
     } else {
       Navigator.pushAndRemoveUntil(

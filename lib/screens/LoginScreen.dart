@@ -158,8 +158,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              AdminDashboardUI(isAdmin: true)),
+                          builder: (context) => AdminDashboardUI(
+                                isAdmin: true,
+                                context: context,
+                              )),
                       (route) => false,
                     ),
                   }

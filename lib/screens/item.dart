@@ -82,7 +82,9 @@ class _ProductDetailState extends State<ProductDetail> {
                 text: TextSpan(
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   children: [
-                    TextSpan(text: 'Total Price: '),
+                    TextSpan(
+                        text: 'Total Price: ',
+                        style: TextStyle(color: Colors.black)),
                     TextSpan(
                       text: '\Rs. $_price',
                       style: TextStyle(color: Colors.orange),
