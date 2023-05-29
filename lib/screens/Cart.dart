@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:menopal/screens/CheckoutPage.dart';
 
 import 'item.dart';
 
@@ -121,8 +122,12 @@ class _CartPageState extends State<CartPage> {
   }
 
   void buyNowAction(Map<String, dynamic> item) {
-    // Implement the logic for the buy now action here
-    // You can navigate to a checkout page or perform any other action
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CheckoutPage(item: item),
+      ),
+    );
   }
 }
 
